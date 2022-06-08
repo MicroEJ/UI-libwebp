@@ -16,7 +16,7 @@ The default allocator (malloc/calloc) has been replaced by the Graphics Engine's
 
 Add the following line to the `module.ivy` of your platform configuration project:
 
-    <dependency org="com.microej.clibrary.thirdparty" name="libwebp" rev="1.0.1"/>
+    <dependency org="com.microej.tool" name="imageio-webp" rev="..."/>
 
 ## BSP
 
