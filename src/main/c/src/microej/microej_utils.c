@@ -1,5 +1,7 @@
-// Copyright 2021-2022 MicroEJ Corp. All rights reserved.
+// Copyright 2021-2026 MicroEJ Corp.
 // Use of this source code is governed by a BSD-style license that can be found with this software.
+//
+// Build: 7E4D1F7C
 // -----------------------------------------------------------------------------
 //
 // Replace the allocator functions WebPSafe*: the original allocator is using
@@ -15,16 +17,17 @@
 // -----------------------------------------------------------------------------
 
 void* WebPSafeMalloc(uint64_t nmemb, size_t size) {
-  assert(nmemb * size > 0);
+  assert((nmemb * size) > 0U);
   return (void*)LLUI_DISPLAY_IMPL_image_heap_allocate((uint32_t)(nmemb * size));
 }
 
 void* WebPSafeCalloc(uint64_t nmemb, size_t size) {
   void* ptr;
-  assert(nmemb * size > 0);
+  assert((nmemb * size) > 0U);
   ptr = (void*)LLUI_DISPLAY_IMPL_image_heap_allocate((uint32_t)(nmemb * size));
-  if (!ptr) return NULL;
-  memset(ptr, 0, (size_t)(nmemb * size));
+  if (ptr != NULL) {
+    (void)memset(ptr, 0, (size_t)(nmemb * size));
+  }
   return ptr;
 }
 
