@@ -11,16 +11,15 @@ See [Additional Decoders](https://docs.microej.com/en/latest/VEEPortingGuide/uiI
    - From the MicroEJ repository: install the `.cco` archive of the version the VEE Port needs, as the [installation guide](https://docs.microej.com/en/latest/VEEPortingGuide/appendix/cmodules.html) describes.
      The archive holds the libwebp source, with the patch of this C Module applied, and the support files, in `bsp/thirdparty/libwebp`.
    - From GitHub: add the [GitHub repository](https://github.com/MicroEJ/UI-libwebp) to the BSP of the VEE Port as a git submodule, at the tag of the version the VEE Port needs.
-     The repository holds the support files only, in `<folder>/src/main/c/src/microej`, where `<folder>` is the folder of the submodule.
-     Get the libwebp source at the commit `8ea81561d2fdd382da60f57958741a7c23a18eb6`, 31 commits after the tag `v1.2.1`, apply the patch of this C Module to it, then copy the files this C Module uses in `<folder>/src/main/c`, the folder the support files expect:
+     The repository holds the support files in `<folder>/src/main/c/src/microej`, where `<folder>` is the folder of the submodule, and the libwebp source as a submodule of its own in `<folder>/src/main/thirdparty/libwebp`, at the commit `8ea81561d2fdd382da60f57958741a7c23a18eb6`, 31 commits after the tag `v1.2.1`.
+     Initialize that submodule, apply the patch of this C Module to the libwebp source, then copy the files this C Module uses in `<folder>/src/main/c`, the folder the support files expect:
 
      ```sh
      git submodule add https://github.com/MicroEJ/UI-libwebp.git bsp/vee/port/ui/UI-libwebp
      git -C bsp/vee/port/ui/UI-libwebp checkout <version>
-     git clone https://chromium.googlesource.com/webm/libwebp libwebp-upstream
-     git -C libwebp-upstream checkout 8ea81561d2fdd382da60f57958741a7c23a18eb6
-     git -C libwebp-upstream apply ../bsp/vee/port/ui/UI-libwebp/src/main/patch/utils.c.patch
-     (cd libwebp-upstream && cp --parents src/dec/*.[ch] src/dsp/*.[ch] src/enc/*.h src/utils/*.[ch] src/webp/*.h AUTHORS COPYING PATENTS ../bsp/vee/port/ui/UI-libwebp/src/main/c/)
+     git -C bsp/vee/port/ui/UI-libwebp submodule update --init --recursive
+     git -C bsp/vee/port/ui/UI-libwebp/src/main/thirdparty/libwebp apply ../../patch/utils.c.patch
+     (cd bsp/vee/port/ui/UI-libwebp/src/main/thirdparty/libwebp && cp --parents src/dec/*.[ch] src/dsp/*.[ch] src/enc/*.h src/utils/*.[ch] src/webp/*.h AUTHORS COPYING PATENTS ../../c/)
      rm -f bsp/vee/port/ui/UI-libwebp/src/main/c/src/dsp/*mips* bsp/vee/port/ui/UI-libwebp/src/main/c/src/dsp/*neon* bsp/vee/port/ui/UI-libwebp/src/main/c/src/dsp/*sse2* bsp/vee/port/ui/UI-libwebp/src/main/c/src/dsp/*sse41* bsp/vee/port/ui/UI-libwebp/src/main/c/src/dsp/*msa*
      ```
 
